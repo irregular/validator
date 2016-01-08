@@ -593,7 +593,7 @@ func TestNilValidator(t *testing.T) {
 
 	var val *Validate
 
-	fn := func(v *Validate, topStruct reflect.Value, current reflect.Value, field reflect.Value, fieldType reflect.Type, fieldKind reflect.Kind, param string) bool {
+	fn := func(v *Validate, topStruct reflect.Value, current reflect.Value, field reflect.Value, fieldType reflect.Type, fieldKind reflect.Kind, param string, fieldName string) bool {
 
 		return current.String() == field.String()
 	}
@@ -4351,7 +4351,7 @@ func TestValidateByTagAndValue(t *testing.T) {
 	errs := validate.FieldWithValue(val, field, "required")
 	Equal(t, errs, nil)
 
-	fn := func(v *Validate, topStruct reflect.Value, current reflect.Value, field reflect.Value, fieldType reflect.Type, fieldKind reflect.Kind, param string) bool {
+	fn := func(v *Validate, topStruct reflect.Value, current reflect.Value, field reflect.Value, fieldType reflect.Type, fieldKind reflect.Kind, param string, fieldName string) bool {
 
 		return current.String() == field.String()
 	}
@@ -4370,7 +4370,7 @@ func TestValidateByTagAndValue(t *testing.T) {
 
 func TestAddFunctions(t *testing.T) {
 
-	fn := func(v *Validate, topStruct reflect.Value, currentStruct reflect.Value, field reflect.Value, fieldType reflect.Type, fieldKind reflect.Kind, param string) bool {
+	fn := func(v *Validate, topStruct reflect.Value, currentStruct reflect.Value, field reflect.Value, fieldType reflect.Type, fieldKind reflect.Kind, param string, fieldName string) bool {
 
 		return true
 	}
