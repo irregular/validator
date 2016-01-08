@@ -176,7 +176,7 @@ type CustomTypeFunc func(field reflect.Value) interface{}
 // currentStruct = current level struct when validating by struct otherwise optional comparison value
 // field         = field value for validation
 // param         = parameter used in validation i.e. gt=0 param would be 0
-type Func func(v *Validate, topStruct reflect.Value, currentStruct reflect.Value, field reflect.Value, fieldtype reflect.Type, fieldKind reflect.Kind, param string) bool
+type Func func(v *Validate, topStruct reflect.Value, currentStruct reflect.Value, field reflect.Value, fieldtype reflect.Type, fieldKind reflect.Kind, param string, fieldName string) bool
 
 // StructLevelFunc accepts all values needed for struct level validation
 type StructLevelFunc func(v *Validate, structLevel *StructLevel)
@@ -671,7 +671,7 @@ func (v *Validate) traverseField(topStruct reflect.Value, currentStruct reflect.
 
 		if valTag.tagVals[0][0] == omitempty {
 
-			if !HasValue(v, topStruct, currentStruct, current, typ, kind, blank) {
+			if !HasValue(v, topStruct, currentStruct, current, typ, kind, blank, name) {
 				return
 			}
 			continue
@@ -731,7 +731,7 @@ func (v *Validate) validateField(topStruct reflect.Value, currentStruct reflect.
 				panic(strings.TrimSpace(fmt.Sprintf(undefinedValidation, name)))
 			}
 
-			if valFunc(v, topStruct, currentStruct, current, currentType, currentKind, val[1]) {
+			if valFunc(v, topStruct, currentStruct, current, currentType, currentKind, val[1], name) {
 				return false
 			}
 
@@ -774,7 +774,7 @@ func (v *Validate) validateField(topStruct reflect.Value, currentStruct reflect.
 		panic(strings.TrimSpace(fmt.Sprintf(undefinedValidation, name)))
 	}
 
-	if valFunc(v, topStruct, currentStruct, current, currentType, currentKind, valTag.tagVals[0][1]) {
+	if valFunc(v, topStruct, currentStruct, current, currentType, currentKind, valTag.tagVals[0][1], name) {
 		return false
 	}
 
